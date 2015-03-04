@@ -1,0 +1,15 @@
+{
+  "name": "ka.weixin",
+  "version": "1.0.0",
+  "description": "微信后台",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lzh",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.12.2",
+    "jssha": "^1.5.0"
+  }
+}
