@@ -3,5 +3,6 @@
 */
 var  utils = require('../utils');
 module.exports = function (req,res) {
+	console.log('request');
 	utils.rsx(req,res);
 }

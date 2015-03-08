@@ -11,7 +11,9 @@ var jsSHA = require('jssha');
 			"Access-Control-Allow-Origin": "*"
 			,"Access-Control-Allow-Methods": "POST,GET"
 			,"Access-Control-Allow-Credentials": "true"
+			
 		});
+		
 		res.json(data);
 	};
 
@@ -34,6 +36,7 @@ var jsSHA = require('jssha');
 			"Access-Control-Allow-Origin": "*"
 			,"Access-Control-Allow-Methods": "POST,GET"
 			,"Access-Control-Allow-Credentials": "true"
+		
 		});
 		responseWithJson(res, {errmsg: 'error', message: info, data: data});
 	};
@@ -114,7 +117,7 @@ var jsSHA = require('jssha');
 	
 exports.rsx = function(req, res) {
 		console.log(req.body);
-		var _url = 'http://localhost:4000/rsx';//req.body.url;
+		var _url = req.body.url;
 		var signatureObj = cachedSignatures[_url];
 
 		if(!_url){

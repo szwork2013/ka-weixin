@@ -4,8 +4,8 @@
 
 module.exports = function  () {
 	return {
-		appid  : 'wxa0f06601f194xxxx',
-		secret : '097fd14bac218d0fb016d02f525dxxxx'
+		appid  : 'wxc11926e87fca4c33',
+		secret : '3d9fd4a4e62b392166cfe7600ee07d17'
 	}
 }
 

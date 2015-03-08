@@ -6,6 +6,7 @@ module.exports = function  (app) {
 		console.log("请求页面");
 	})
 
-	app.get('/rsx',rsx)
+	app.post('/rsx',rsx);
+	
 
 }
