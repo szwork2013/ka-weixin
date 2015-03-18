@@ -17,7 +17,13 @@ module.exports.getWechatUserInfo = function (req,res) {
 		https.get(url, function(_res){
 
 			_res.on('data',function(data){
-				var result =  JSON.parse(data.toString());				
+				var result =  JSON.parse(data.toString());
+				res.set({
+					 "Access-Control-Allow-Origin": "*"
+					,"Access-Control-Allow-Methods": "POST,GET"
+					,"Access-Control-Allow-Credentials": "true"
+					
+				});			
 				res.json(result);
 			});
 
