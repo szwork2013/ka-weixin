@@ -4,13 +4,12 @@ var getAppsInfo = require('../../config/apps-info'); // 从外部加载app的配
 var appIds = getAppsInfo();
 var https = require("https");
 module.exports.getWechatUserInfo = function (req,res) {
-
 	res.set({
-			"Access-Control-Allow-Origin": "*"
-			,"Access-Control-Allow-Methods": "POST,GET"
-			,"Access-Control-Allow-Credentials": "true"
-		
-		});
+					 "Access-Control-Allow-Origin": "*"
+					,"Access-Control-Allow-Methods": "POST,GET"
+					,"Access-Control-Allow-Credentials": "true"
+					
+	});	
 
     var getUserInfo = function(access_token, openid){
 		var url = "https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+openid+"&lang=zh_CN";
@@ -18,12 +17,7 @@ module.exports.getWechatUserInfo = function (req,res) {
 
 			_res.on('data',function(data){
 				var result =  JSON.parse(data.toString());
-				res.set({
-					 "Access-Control-Allow-Origin": "*"
-					,"Access-Control-Allow-Methods": "POST,GET"
-					,"Access-Control-Allow-Credentials": "true"
-					
-				});			
+				console(res);
 				res.json(result);
 			});
 
