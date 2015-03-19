@@ -17,7 +17,7 @@ module.exports.getWechatUserInfo = function (req,res) {
 
 			_res.on('data',function(data){
 				var result =  JSON.parse(data.toString());
-				console(res);
+				console.log(result);
 				res.json(result);
 			});
 
