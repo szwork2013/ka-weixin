@@ -36,6 +36,7 @@ module.exports.getWechatUserInfo = function (req,res) {
 						//请求的数据是二进制类型的，原本是utf8格式，使用toString可以转字符串			
 						var result =  JSON.parse(data.toString());	
 						//res.json(result);
+						console.log(result.access_token,result.openid);
 						getUserInfo(result.access_token, result.openid);
 					});
 
