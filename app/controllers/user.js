@@ -29,7 +29,8 @@ module.exports.getWechatUserInfo = function (req,res) {
 	};
 
 	var getAccess_token = function(req,res){
-				var code = req.params.code
+				var code = req.body.code;
+				console.log("code"+code);
 				var url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appIds.appid+"&secret="+appIds.secret+"&code="+code+"&grant_type=authorization_code"
 				https.get(url, function(_res){
 					_res.on('data',function(data){
