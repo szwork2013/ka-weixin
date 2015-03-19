@@ -12,7 +12,7 @@ module.exports = function  (app) {
 	app.post('/getUserInfo',user.getWechatUserInfo);
 
 	app.get('/url',function(){
-		user.getOauthUrl('http://kapark.cn:4000/index','12','snsapi_userinfo');
+		user.getOauthUrl('http://kapark.cn/#/index','12','snsapi_userinfo');
 	});
 	
 
