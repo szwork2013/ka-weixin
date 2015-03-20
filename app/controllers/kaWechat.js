@@ -19,7 +19,7 @@ var appInfo = getAppsInfo();
 
 var config = {
   token: 'weixin',
-  appid: 'wx19c9b5033af2c51d',
+  appid: 'wxc11926e87fca4c33',
   encodingAESKey: 'fAEBTD5FYRZp0GVuiTH7YBkHVNsXE94yWyA56ayqPxC'
 };
 
