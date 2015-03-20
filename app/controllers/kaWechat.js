@@ -5,22 +5,22 @@ var wechat = require('wechat');
 var WechatAPI = require('wechat-api');
 var getAppsInfo = require('../../config/apps-info'); // 从外部加载app的配置信息
 var appInfo = getAppsInfo();
-var api = new WechatAPI(appInfo.appid, appInfo.secret, function (callback) {
-  // 传入一个获取全局token的方法
-  fs.readFile('access_token.txt', 'utf8', function (err, txt) {
-    if (err) {return callback(err);}
-    callback(null, JSON.parse(txt));
-  });
-}, function (token, callback) {
-  // 请将token存储到全局，跨进程、跨机器级别的全局，比如写到数据库、redis等
-  // 这样才能在cluster模式及多机情况下使用，以下为写入到文件的示例
-  fs.writeFile('access_token.txt', JSON.stringify(token), callback);
-});
+// var api = new WechatAPI(appInfo.appid, appInfo.secret, function (callback) {
+//   // 传入一个获取全局token的方法
+//   fs.readFile('access_token.txt', 'utf8', function (err, txt) {
+//     if (err) {return callback(err);}
+//     callback(null, JSON.parse(txt));
+//   });
+// }, function (token, callback) {
+//   // 请将token存储到全局，跨进程、跨机器级别的全局，比如写到数据库、redis等
+//   // 这样才能在cluster模式及多机情况下使用，以下为写入到文件的示例
+//   fs.writeFile('access_token.txt', JSON.stringify(token), callback);
+// });
 
 var config = {
-  token: 'token',
-  appid: 'appid',
-  encodingAESKey: 'encodinAESKey'
+  token: 'weixin',
+  appid: 'wx19c9b5033af2c51d',
+  encodingAESKey: 'fAEBTD5FYRZp0GVuiTH7YBkHVNsXE94yWyA56ayqPxC'
 };
 
 // exports.index = function(){
@@ -28,7 +28,7 @@ var config = {
 // }
 
 
-exports.index = wechat("weixin", wechat.text(function (message, req, res) {
+exports.index = wechat(config, wechat.text(function (message, req, res) {
   console.log(message);
   var input = (message.Content || '').trim();
   var from = message.FromUserName;
