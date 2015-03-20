@@ -82,3 +82,8 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
     res.reply('暂未支持! Coming soon!');
   }
 }));
+
+
+exports.login = function(){
+
+};
