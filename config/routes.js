@@ -10,7 +10,7 @@ module.exports = function  (app) {
 
 	app.post('/rsx',rsx);
     
-    app.get('/wechat/index',kaWechat.index);
+    app.use('/wechat/index',kaWechat.index);
 	app.post('/getUserInfo',user.getWechatUserInfo);
 
 	app.get('/url',function(){
