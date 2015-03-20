@@ -9,8 +9,10 @@ module.exports = function  (app) {
 	})
 
 	app.post('/rsx',rsx);
-    
+
+    //微信开发绑定的url,需要支持get和post,所以使用use
     app.use('/wechat/index',kaWechat.index);
+    
 	app.post('/getUserInfo',user.getWechatUserInfo);
 
 	app.get('/url',function(){
