@@ -3,10 +3,11 @@
 var express = require('express');
 var path = require('path');
 var bodyParser  = require('body-parser')
-var port  = process.env.PORT || 4000;
+var port  = process.env.PORT || 80;
 var app = express();
 
 app.use(bodyParser.json());
+app.use(express.query());
 app.use(bodyParser.urlencoded({extended:false}));
 // 设置数据库和视图层的连接
 //app.all('*', function(req, res, next) {

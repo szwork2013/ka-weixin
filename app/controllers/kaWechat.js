@@ -1,10 +1,11 @@
 /*
 **定义微信入口模块
 */
+var wechat = require('wechat');
 var WechatAPI = require('wechat-api');
 var getAppsInfo = require('../../config/apps-info'); // 从外部加载app的配置信息
 var appInfo = getAppsInfo();
-var api = new API(appInfo.appid, appInfo.secret, function (callback) {
+var api = new WechatAPI(appInfo.appid, appInfo.secret, function (callback) {
   // 传入一个获取全局token的方法
   fs.readFile('access_token.txt', 'utf8', function (err, txt) {
     if (err) {return callback(err);}
