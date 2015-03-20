@@ -1,6 +1,13 @@
 /*
 **定义微信入口模块
 */
+var config = {
+  token: 'weixin',
+  appid: 'wxc11926e87fca4c33',
+  encodingAESKey: 'fAEBTD5FYRZp0GVuiTH7YBkHVNsXE94yWyA56ayqPxC',
+  secret: "3d9fd4a4e62b392166cfe7600ee07d17",
+  domain: "http://120.24.84.180"
+};
 var wechat = require('wechat');
 var WechatAPI = require('wechat-api');
 var getAppsInfo = require('../../config/apps-info'); // 从外部加载app的配置信息
@@ -16,16 +23,8 @@ var appInfo = getAppsInfo();
 //   // 这样才能在cluster模式及多机情况下使用，以下为写入到文件的示例
 //   fs.writeFile('access_token.txt', JSON.stringify(token), callback);
 // });
-
-var config = {
-  token: 'weixin',
-  appid: 'wxc11926e87fca4c33',
-  encodingAESKey: 'fAEBTD5FYRZp0GVuiTH7YBkHVNsXE94yWyA56ayqPxC'
-};
-
-// exports.index = function(){
-// 	 wechat.checkSignature();
-// }
+var i =0;
+console.log(i++);
 
 
 exports.index = wechat(config, wechat.text(function (message, req, res) {
@@ -47,26 +46,26 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
   }
 }).image(function (message, req, res) {
   console.log(message);
-  res.reply('还没想好图片怎么处理啦。');
+  res.reply('图片');
 }).location(function (message, req, res) {
   console.log(message);
-  res.reply('想和我约会吗，不要的啦。');
+  res.reply('位置');
 }).voice(function (message, req, res) {
   console.log(message);
-  res.reply('心情不好，不想搭理你。');
+  res.reply('语音');
 }).link(function (message, req, res) {
   console.log(message);
-  res.reply('点连接进来的是吧！');
+  res.reply('链接');
 }).event(function (message, req, res) {
   console.log(message);
   if (message.Event === 'subscribe') {
     // 用户添加时候的消息
     //http://www.cnblogs.com/txw1958/p/weixin-qrcode-with-parameters.html
-    var content = "感谢您关注互助停车。互助，让停车更轻松！"+
-				  "我们现与方圆月岛停车场进行深入合作，为周边用户解决停车难这个大问题。一键下载安卓版APP，车主立即解决当前问题，业主也能轻松分享空闲车位帮助别人。/n"+
-				   "即日起到3月31日，我们平台将推出如下优惠活动/n"+
-				   "①新注册用户首次停车首半小时租金次日返还/n"+
-				   "②充值每50元赠送10元（赠送金额次日到账，不能提现）/n"
+    var content = "感谢您关注互助停车。互助，让停车更轻松\n！"+
+				  "我们现与方圆月岛停车场进行深入合作，为周边用户解决停车难这个大问题。一键下载安卓版APP，车主立即解决当前问题，业主也能轻松分享空闲车位帮助别人。\n"+
+				   "即日起到3月31日，我们平台将推出如下优惠活动\n"+
+				   "①新注册用户首次停车首半小时租金次日返还\n"+
+				   "②充值每50元赠送10元（赠送金额次日到账，不能提现）\n"
                    "现阶段App Store尚在审核苹果版本，微信端功能即将开放，敬请期待！";
     var scene_id = message.EventKey; //推广员id
     var from = message.FromUserName; //用户openid
