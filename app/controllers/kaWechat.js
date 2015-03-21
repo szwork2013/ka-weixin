@@ -1,31 +1,28 @@
 /*
 **定义微信入口模块
 */
+var fs = require('fs');
+var wechat = require('wechat');
+var WechatAPI = require('wechat-api');
 var config = {
   token: 'weixin',
   appid: 'wxc11926e87fca4c33',
   encodingAESKey: 'fAEBTD5FYRZp0GVuiTH7YBkHVNsXE94yWyA56ayqPxC',
   secret: "3d9fd4a4e62b392166cfe7600ee07d17",
-  domain: "http://120.24.84.180"
+  domain: "http://app.kapark.cn";   //开发环境域名 "http://120.24.84.180"
 };
-var wechat = require('wechat');
-var WechatAPI = require('wechat-api');
-var getAppsInfo = require('../../config/apps-info'); // 从外部加载app的配置信息
-var appInfo = getAppsInfo();
-// var api = new WechatAPI(appInfo.appid, appInfo.secret, function (callback) {
-//   // 传入一个获取全局token的方法
-//   fs.readFile('access_token.txt', 'utf8', function (err, txt) {
-//     if (err) {return callback(err);}
-//     callback(null, JSON.parse(txt));
-//   });
-// }, function (token, callback) {
-//   // 请将token存储到全局，跨进程、跨机器级别的全局，比如写到数据库、redis等
-//   // 这样才能在cluster模式及多机情况下使用，以下为写入到文件的示例
-//   fs.writeFile('access_token.txt', JSON.stringify(token), callback);
-// });
-var i =0;
-console.log(i++);
 
+var api = new WechatAPI(config.appid, config.secret, function (callback) {
+  // 传入一个获取全局token的方法
+  fs.readFile('./config/access_token.txt', 'utf8', function (err, txt) {
+    if (err) {return callback(err);}
+    callback(null, JSON.parse(txt));
+  });
+}, function (token, callback) {
+  // 请将token存储到全局，跨进程、跨机器级别的全局，比如写到数据库、redis等
+  // 这样才能在cluster模式及多机情况下使用，以下为写入到文件的示例
+  fs.writeFile('./config/access_token.txt', JSON.stringify(token), callback);
+});
 
 exports.index = wechat(config, wechat.text(function (message, req, res) {
   console.log(message);
@@ -78,6 +75,13 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
     res.reply('扫描'+message.EventKey);
   } else if (message.Event === 'unsubscribe') {
     res.reply('Bye!'); 
+  } else if (message.Event === 'click') {
+    var content = '';
+    switch(message.EventKey){
+        case 'recharge': content = '点击我的微信：&lt;a href=&quot;weixin://contacts/profile/linzehuan_&quot;&gt;StartOne&lt;/a&gt';break;
+        default: content = 'click类型不存在';
+      };
+    res.reply(content); 
   } else {
     res.reply('暂未支持! Coming soon!');
   }
@@ -86,4 +90,46 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
 
 exports.login = function(){
 
+};
+
+exports.setMenu = function(req, res){
+	var menu = {
+				 "button":[
+				   {
+				     "type":"view",
+				     "name":"互助停车",
+				     "url": config.domain+"/login"
+				   },
+           {
+             "type":"view",
+             "name":"分享车位",
+             "url": config.domain+"/login"
+           },
+            {
+             "name":"联系我们",
+             "sub_button":[
+               {
+                 "type":"click",
+                 "name":"快速充值",
+                 "key":"recharge"
+               },
+               {
+                 "type":"view",
+                 "name":"下载安桌版",
+                 "url":config.domain+"/"
+               },
+               {
+                 "type":"view",
+                 "name":"关于我们",
+                 "url":config.domain+"/connectUs"
+               }]
+             }
+            ]
+				   
+				};
+
+	 api.createMenu(menu,function(err,result){
+        console.log(err);
+        console.log(result.toString());
+   });
 };
