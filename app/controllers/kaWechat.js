@@ -84,7 +84,7 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
     // res.reply(content); 
     var mediaId = "n7pKJcMZC15Ng9-PU87lflwco9wLDvWdhpQtQX9Z2SCAq73MnIkVj76gPZfwJb0z";
         res.reply({
-          tyep: 'image',
+          type: 'image',
           content: {
             mediaId: mediaId
           }
