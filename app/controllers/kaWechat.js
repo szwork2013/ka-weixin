@@ -78,9 +78,7 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
   } else if (message.Event === 'CLICK') {
     var content = '';
     switch(message.EventKey){
-
-
-        case 'recharge': content = "<a href=\"weixin://contacts/profile/linzehuan_\">点击我的微信</a>";//'点击我的微信：&lt;a href=&quot;weixin://contacts/profile/linzehuan_&quot;&gt;StartOne&lt;/a&gt;';break;
+        case 'recharge': content = "<a href=\"weixin://contacts/profile/linzehuan_\">点击我的微信</a>";break;//'点击我的微信：&lt;a href=&quot;weixin://contacts/profile/linzehuan_&quot;&gt;StartOne&lt;/a&gt;';break;
         default: content = 'click类型不存在';
       };
     res.reply(content); 
