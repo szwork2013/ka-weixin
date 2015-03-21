@@ -43,7 +43,6 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
   }
 }).image(function (message, req, res) {
   console.log(message);
-  res.reply('图片');
 }).location(function (message, req, res) {
   console.log(message);
   res.reply('位置');
@@ -76,13 +75,20 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
   } else if (message.Event === 'unsubscribe') {
     res.reply('Bye!'); 
   } else if (message.Event === 'CLICK') {
-    var content = '';
-    switch(message.EventKey){
-        case 'recharge': content = "充值客服：&lt;a href=&quot;weixin://contacts/profile/linzehuan_&quot;&gt;StartOne&lt;/a&gt;";break;
-        default: content = 'click类型不存在';
-      };
-    content =  '充值客服：<a href="http://kapark.cn/wechat/recharge">1. 点击记录团队充值</a>';
-    res.reply(content); 
+    // var content = '';
+    // switch(message.EventKey){
+    //     case 'recharge': content = "充值客服：&lt;a href=&quot;weixin://contacts/profile/linzehuan_&quot;&gt;StartOne&lt;/a&gt;";break;
+    //     default: content = 'click类型不存在';
+    //   };
+    // content =  '充值客服：<a href="http://kapark.cn/wechat/recharge">1. 点击记录团队充值</a>';
+    // res.reply(content); 
+    var mediaId = "iN6IpyNjgrU_WH1UeWuiqvxQidKA0rsry4FSCJcz3B4MXbc6pesLe9uV0V2zzCCr"
+        res.reply({
+          tyep: 'image',
+          content: {
+            mediaId: mediaId
+          }
+        });
   } else {
     res.reply('暂未支持! Coming soon!');
   }
