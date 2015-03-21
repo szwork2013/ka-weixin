@@ -79,9 +79,10 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
     var content = '';
     switch(message.EventKey){
         case 'recharge': content = "<a href=\"weixin://contacts/profile/linzehuan_\">点击我的微信</a>";break;//'点击我的微信：&lt;a href=&quot;weixin://contacts/profile/linzehuan_&quot;&gt;StartOne&lt;/a&gt;';break;
-        content =  "<a href=\"http://your_IP/weixin/refill>1. 点击记录团队充值</a>";
+
         default: content = 'click类型不存在';
       };
+    content =  "<a href=\"http://your_IP/weixin/refill>1. 点击记录团队充值</a>";
     res.reply(content); 
   } else {
     res.reply('暂未支持! Coming soon!');
