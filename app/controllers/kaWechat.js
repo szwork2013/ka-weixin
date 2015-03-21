@@ -82,7 +82,7 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
     //   };
     // content =  '充值客服：<a href="http://kapark.cn/wechat/recharge">1. 点击记录团队充值</a>';
     // res.reply(content); 
-    var mediaId = "iN6IpyNjgrU_WH1UeWuiqvxQidKA0rsry4FSCJcz3B4MXbc6pesLe9uV0V2zzCCr"
+    var mediaId = "n7pKJcMZC15Ng9-PU87lflwco9wLDvWdhpQtQX9Z2SCAq73MnIkVj76gPZfwJb0z";
         res.reply({
           tyep: 'image',
           content: {
