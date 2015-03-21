@@ -9,7 +9,7 @@ var config = {
   appid: 'wxc11926e87fca4c33',
   encodingAESKey: 'fAEBTD5FYRZp0GVuiTH7YBkHVNsXE94yWyA56ayqPxC',
   secret: "3d9fd4a4e62b392166cfe7600ee07d17",
-  domain: "http://app.kapark.cn";   //开发环境域名 "http://120.24.84.180"
+  domain: "http://app.kapark.cn"   //开发环境域名 "http://120.24.84.180"
 };
 
 var api = new WechatAPI(config.appid, config.secret, function (callback) {
