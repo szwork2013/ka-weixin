@@ -78,10 +78,10 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
   } else if (message.Event === 'CLICK') {
     var content = '';
     switch(message.EventKey){
-        case 'recharge': content = "点击我的微信：&lt;a href=&quot;weixin://contacts/profile/linzehuan_&quot;&gt;StartOne&lt;/a&gt;";break;
+        case 'recharge': content = "充值客服：&lt;a href=&quot;weixin://contacts/profile/linzehuan_&quot;&gt;StartOne&lt;/a&gt;";break;
         default: content = 'click类型不存在';
       };
-    content =  '充值客服：<a href="http://baidu.com">1. 点击记录团队充值</a>';
+    content =  '充值客服：<a href="http://kapark.cn/wechat/recharge">1. 点击记录团队充值</a>';
     res.reply(content); 
   } else {
     res.reply('暂未支持! Coming soon!');
@@ -117,7 +117,7 @@ exports.setMenu = function(req, res){
                {
                  "type":"view",
                  "name":"下载安桌版",
-                 "url":config.domain+"/"
+                 "url":config.domain+"/recharge"
                },
                {
                  "type":"view",
@@ -133,4 +133,11 @@ exports.setMenu = function(req, res){
         console.log(err);
         console.log(result.toString());
    });
+};
+
+
+
+exports.recharge = function(req, res){
+        console.log('redirect');
+        res.redirect("weixin://contacts/profile/linzehuan_");
 };
