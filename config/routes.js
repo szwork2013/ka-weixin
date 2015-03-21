@@ -16,9 +16,13 @@ module.exports = function  (app) {
     app.get('/wechat/setmenu',kaWechat.setMenu);
 	app.post('/getUserInfo',user.getWechatUserInfo);
     app.get('/wechat/recharge',kaWechat.recharge);
+    app.get('/wechat/oauth',kaWechat.oauth);
+    app.get('/wechat/callback',kaWechat.callback);
 	app.get('/url',function(){
 		user.getOauthUrl('http://kapark.cn/#/index','12','snsapi_userinfo');
 	});
+
+
 	
 
 };

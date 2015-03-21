@@ -12,6 +12,19 @@ var config = {
   domain: "http://app.kapark.cn"   //开发环境域名 "http://120.24.84.180"
 };
 
+var oauth = new wechat.OAuth('appid', 'secret', function (openid, callback) {
+  // 传入一个根据openid获取对应的全局token的方法
+  fs.readFile('./config/' + openid +':access_token.txt', 'utf8', function (err, txt) {
+    if (err) {return callback(err);}
+    callback(null, JSON.parse(txt));
+  });
+}, function (openid, token, callback) {
+  // 请将token存储到全局，跨进程、跨机器级别的全局，比如写到数据库、redis等
+  // 这样才能在cluster模式及多机情况下使用，以下为写入到文件的示例
+  // 持久化时请注意，每个openid都对应一个唯一的token!
+  fs.writeFile('./config/' + openid + ':access_token.txt', JSON.stringify(token), callback);
+});
+
 var api = new WechatAPI(config.appid, config.secret, function (callback) {
   // 传入一个获取全局token的方法
   fs.readFile('./config/access_token.txt', 'utf8', function (err, txt) {
@@ -97,6 +110,25 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
 
 exports.login = function(){
 
+};
+
+exports.oauth = function(req, res){
+  res.writeHead(200);
+  var redirect = 'http://kapark.cn/wechat/callback';
+  var authorizeURL = oauth.getAuthorizeURL(redirect, 'state', 'snsapi_userinfo')
+  res.end(authorizeURL);
+}
+
+exports.callback = function (req, res) {
+  res.writeHead(200);
+  oauth.getAccessToken(req.query.code, function (err, result) {
+    var accessToken = result.data.access_token;
+    var openid = result.data.openid;
+    oauth.getUser(openid,function(err,result){
+       res.end(result);
+    });
+
+  });
 };
 
 exports.setMenu = function(req, res){
