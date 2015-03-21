@@ -81,7 +81,7 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
         case 'recharge': content = "点击我的微信：&lt;a href=&quot;weixin://contacts/profile/linzehuan_&quot;&gt;StartOne&lt;/a&gt;";break;
         default: content = 'click类型不存在';
       };
-    content =  "充值客服：<a href='weixin://contacts/profile/mktingweb'>1. 点击记录团队充值</a>点击关注 <a href='http://kapark.cn'>链接</a>";
+    content =  "充值客服：<a href=\"weixin://contacts/profile/mktingweb\">1. 点击记录团队充值</a>点击关注 <a href=\"http://kapark.cn\"">链接</a>";
     res.reply(content); 
   } else {
     res.reply('暂未支持! Coming soon!');
