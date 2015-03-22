@@ -1,0 +1,108 @@
+
+	<section id="parkManege">
+		<header class="header1">
+		<a ui-sref="index">
+		<div class="logo-wrap">
+			<img  class="logo" src="/images/back.png" alt="返回">
+		</div>
+		</a>
+		<span class="header-title">车位管理</span>
+		
+		<!-- <span class="local">添加车位</span> -->
+		</header>
+		<ul class="parkmanege-list" ng-controller="GetMyParkDetail">
+
+			<a ng-repeat="detail in details" ui-sref="timeset({parkDetailId: detail.fparkdetailid})" >
+				<li>
+					<div class="title-group">
+						<span class="state {{detail.fDetailtype|detailtypeToClass}}">{{detail.fDetailtype}}</span>
+						<span class="title">{{detail.fname}} {{detail.fnumber}}</span>
+					</div>
+					
+					<div class="time" ng-show="{{detail.showTime}}">
+						<span class="start">{{detail.fStartDateTime|dbDateToShow1}}</span>
+						<span class="flag">-</span>
+						<span class="end">{{detail.fEndDateTime|dbDateToShow1}}</span>
+					</div>
+					<div class="cycle1" ng-show="{{detail.showCycle1}}" ng-show="true">
+						<span class="start">{{detail.fStartDateTime|dbDateToDay}}</span>
+						<span class="end">{{detail.fEndDateTime|dbDateToDay}}</span>
+					</div>
+					<div class="cycle2" ng-show="{{detail.showCycle2}}">
+					{{detail.fWeek|weekToDay}}
+				</div>
+					<div class="cycle3" ng-show="{{detail.showCycle3}}">
+					车位正长期分享
+					</div>
+					<div class="cycle3" ng-show="{{detail.showNoShare}}">
+					暂未设置分享
+					</div>
+					
+				</li>
+			</a>
+			<a ng-repeat="waitzu in details.waitZus" ui-sref="timeset({parkDetailId: waitzu.id})" >
+				<li>
+					<div class="title-group">
+						<span class="state one">待租用</span>
+						<span class="title">{{waitzu.name}} {{waitzu.number}}</span>
+					</div>
+					
+					<div class="time">
+						<span class="start">16:59</span>
+						<span class="flag">-</span>
+						<span class="end">00:59</span>
+					</div>
+					<div class="cycle1">
+						<span class="start">今天</span>
+						<span class="end">后天</span>
+					</div>
+					<div class="cycle2">
+					每周一、三、日
+				</div>
+					<div class="cycle3">
+					车位正长期分享
+				</div>
+					
+				</li>
+			</a>
+			<a ng-repeat="Zuing in details.Zuings" ui-sref="timeset({parkDetailId:Zuing.id})" >
+				<li>
+				<div class="title-group">
+					<span class="state three">出租中</span>
+					<span class="title">{{Zuing.name}} {{Zuing.number}}</span>
+				</div>
+
+				<div class="cycle3">
+					车位正长期分享
+				</div>
+				</li>
+			</a>
+			<a ng-repeat="waitShare in details.waitShares" ui-sref="timeset({parkDetailId:waitShare.id})" >
+			<li>
+				<div class="title-group">
+					<span class="state two">待分享</span>
+					<span class="title">{{waitShare.name}} {{waitShare.number}}</span>
+				</div>
+				<div class="time">
+					<span class="start">16:59</span>
+					<span class="flag">-</span>
+					<span class="end">00:59</span>
+				</div>
+				<div class="cycle2">
+					每周一、三、日
+				</div>
+			</li>
+			</a>
+			
+			
+
+			<li class="examine"  ng-repeat="examine in examines">
+				<div class="title-group">
+					<span class="state">审核中</span>
+					<span class="title">{{examine.fname}} {{examine.fnumber}}</span>
+				</div>
+			</li>
+	
+			
+		</ul>
+	</section>

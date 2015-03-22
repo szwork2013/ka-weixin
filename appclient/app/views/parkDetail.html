@@ -1,0 +1,48 @@
+
+	<section id="parkDetail"  ng-controller="parkDetailCtrl">
+		<header class="header2">
+			<nav class="detail-header">
+				<div class="logo-wrap">
+				<a ui-sref="queryPark">
+				<img  class="logo" src="images/back.png" alt="返回">
+				</a>
+				</div>
+				<span class="header-title">查询车位</span>
+				<div class="local-logo-wrap">
+				<img class="local-logo" src="images/localtionLogo.png" alt="定位">
+				</div>
+				<span class="local">广州市</span>
+			</nav>
+			<div class="park-name">{{parkInfo.name}}</div>
+			<div class="park-address">{{parkInfo.address}}</div>
+			<div class="park-leave">空位：{{parkInfo.leave}}个</div>
+			<div class="park-location">960米内</div>
+		</header>
+		<div class="sub-title">待租用车位</div>
+		<ul class="park-detail-list" ng-click="onModalPop()">
+			
+			<li ng-repeat="parkDetail in parkDetails" >
+				<div class="park-number">{{parkDetail.number}}</div>
+				<div class="park-endtime">结束时间:{{parkDetail.time}}</div>
+				<div class="par-number-detail"><img src="images/gohead.png" alt=""></div>
+			</li>
+			
+			
+		</ul>
+		<div class="shade">
+		<div class="modal">
+			<div class="title">
+				敬请注意
+			</div>
+			<div class="info">
+				租用车位请下载我们专用的app
+			</div>
+			<div class="btn">
+				<button class="refuse">残忍拒绝</button>
+				<button class="accept">立即下载</button>
+			</div>
+			
+		</div>
+	</div>
+	</section>
+

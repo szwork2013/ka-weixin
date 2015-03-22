@@ -2,6 +2,8 @@
 **定义微信入口模块
 */
 var fs = require('fs');
+var path = require('path');
+var ejs = require('ejs');
 var wechat = require('wechat');
 var WechatAPI = require('wechat-api');
 var config = {
@@ -9,12 +11,12 @@ var config = {
   appid: 'wxc11926e87fca4c33',
   encodingAESKey: 'fAEBTD5FYRZp0GVuiTH7YBkHVNsXE94yWyA56ayqPxC',
   secret: "3d9fd4a4e62b392166cfe7600ee07d17",
-  domain: "http://app.kapark.cn"   //开发环境域名 "http://120.24.84.180"
+  domain: "http://kapark.cn"   //开发环境域名 "http://120.24.84.180"
 };
 
-var oauth = new wechat.OAuth('appid', 'secret', function (openid, callback) {
+var oauth = new wechat.OAuth(config.appid, config.secret,function (openid, callback) {
   // 传入一个根据openid获取对应的全局token的方法
-  fs.readFile('./config/' + openid +':access_token.txt', 'utf8', function (err, txt) {
+  fs.readFile('./config/user_access_token/' + openid +'.txt', 'utf8', function (err, txt) {
     if (err) {return callback(err);}
     callback(null, JSON.parse(txt));
   });
@@ -22,7 +24,7 @@ var oauth = new wechat.OAuth('appid', 'secret', function (openid, callback) {
   // 请将token存储到全局，跨进程、跨机器级别的全局，比如写到数据库、redis等
   // 这样才能在cluster模式及多机情况下使用，以下为写入到文件的示例
   // 持久化时请注意，每个openid都对应一个唯一的token!
-  fs.writeFile('./config/' + openid + ':access_token.txt', JSON.stringify(token), callback);
+  fs.writeFile('./config/user_access_token/' + openid + '.txt', JSON.stringify(token), callback);
 });
 
 var api = new WechatAPI(config.appid, config.secret, function (callback) {
@@ -36,6 +38,19 @@ var api = new WechatAPI(config.appid, config.secret, function (callback) {
   // 这样才能在cluster模式及多机情况下使用，以下为写入到文件的示例
   fs.writeFile('./config/access_token.txt', JSON.stringify(token), callback);
 });
+
+api.registerTicketHandle(function (type,callback) {
+  // 传入一个获取全局token的方法
+  fs.readFile('./config/ticket_token.txt', 'utf8', function (err, txt) {
+    if (err) {return callback(err);}
+    callback(null, JSON.parse(txt));
+  });
+}, function (type, ticketToken, callback) {
+  // 请将token存储到全局，跨进程、跨机器级别的全局，比如写到数据库、redis等
+  // 这样才能在cluster模式及多机情况下使用，以下为写入到文件的示例
+  fs.writeFile('./config/ticket_token.txt', JSON.stringify(ticketToken), callback);
+});
+
 
 exports.index = wechat(config, wechat.text(function (message, req, res) {
   console.log(message);
@@ -107,11 +122,46 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
   }
 }));
 
+//微信JS的调用
+var param = {
+     debug: true,
+     jsApiList: [
+            'checkJsApi',
+            'openLocation',
+            'getLocation',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+                    'onMenuShareWeibo'
+          ],
+     url: 'http://kapark.cn/wechat/login/'
+  };
 
-exports.login = function(){
+//微信webAPP登陆
+exports.login = function(req,res){
+    console.log('login');
+    //获取最新的js sdk 配置 传给前台
+      //有openid
+    if(true){  //req.cookies.openid
+     api.getJsConfig(param, function (err,result) {
+       console.log(result);
+       res.cookie('appId',result.appId);
+       res.cookie('timestamp',result.timestamp);
+       res.cookie('nonceStr',result.nonceStr);
+       res.cookie('signature',result.signature);
+       res.cookie('jsApiList',result.jsApiList);
+       res.end(appTpl({text:config.appid}));
+     });   
+    }else{  
+      //没有openid,进行授权登陆
+       console.log('重定向页面');
+       res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc11926e87fca4c33&redirect_uri=http%3A%2F%2Fkapark.cn%2Fwechat%2Fcallback&response_type=code&scope=snsapi_userinfo&state=state#wechat_redirect');
+       res.end();
+    }
 
 };
 
+//生成授权登陆的链接
 exports.oauth = function(req, res){
   res.writeHead(200);
   var redirect = 'http://kapark.cn/wechat/callback';
@@ -119,25 +169,45 @@ exports.oauth = function(req, res){
   res.end(authorizeURL);
 }
 
+  var APPCLIENT_DIR = path.join(__dirname,'..','..','appclient','app');
+  var appTpl = ejs.compile(fs.readFileSync(path.join(APPCLIENT_DIR,'index.html'), 'utf-8'));
+
 exports.callback = function (req, res) {
-  res.writeHead(200);
+  //重定向不能设置请求头
+  //res.writeHead(200);
+  console.log('进入callback: code='+req.query.code);
   oauth.getAccessToken(req.query.code, function (err, result) {
-    var accessToken = result.data.access_token;
-    var openid = result.data.openid;
-    oauth.getUser(openid,function(err,result){
-       res.end(result);
-    });
+    console.log('获取accessToken\n');
+    console.log(result);
+    if(result && result.data){
+
+       var accessToken = result.data.access_token;
+       var openid = result.data.openid;
+       // oauth.getUser(openid,function(err,_result){     
+       // }        
+      //);
+        console.log('set openid');
+        res.cookie('openid',openid);
+        res.redirect('login/');
+        res.end();
+    }else{
+        console.log('code unvalid');
+        res.end();
+    }
+    
 
   });
 };
 
+
+//创建菜单
 exports.setMenu = function(req, res){
 	var menu = {
 				 "button":[
 				   {
 				     "type":"view",
 				     "name":"互助停车",
-				     "url": config.domain+"/login"
+				     "url": config.domain+"/wechat/login/"
 				   },
            {
              "type":"view",
@@ -168,14 +238,19 @@ exports.setMenu = function(req, res){
 				};
 
 	 api.createMenu(menu,function(err,result){
-        console.log(err);
-        console.log(result.toString());
+       res.json(result);
+       res.end();
    });
 };
 
 
-
+//提现功能
 exports.recharge = function(req, res){
         console.log('redirect');
         res.redirect("weixin://contacts/profile/linzehuan_");
 };
+
+
+exports.app = function(req,res) {
+       
+}

@@ -1,0 +1,32 @@
+
+	<section id="history">
+		<header class="header1">
+		<a ui-sref="index">
+		<div class="logo-wrap">
+			<img  class="logo" src="/images/back.png" alt="返回">
+		</div>
+		</a>
+		<span class="header-title">历史记录</span>
+		<div class="local-logo-wrap">
+			<img class="local-logo" src="/images/localtionLogo.png" alt="定位">
+		</div>
+		<span class="local">广州市</span>
+		</header>
+		<ul class="history-list" ng-controller="historyCtrl">
+
+			
+			<li class="histroy-one" ng-repeat="histroy in histroys">
+				<div class="title-wrap">
+					<span class="title">{{histroy.name}}{{histroy.number}}</span>
+					<span class="number">{{histroy.carnumber}}</span>
+				</div>
+				<div class="price">{{histroy.payment}}</div>
+				<div class="intime">进场时间: {{histroy.inTime}}</div>
+				<div class="outtime">出场时间: {{histroy.entTime}}</div>
+				<div class="state">{{histroy.state}}</div>
+				<div class="score">获得积分：{{histroy.score}}</div>
+				
+			</li>
+		
+		</ul>
+	</section>
