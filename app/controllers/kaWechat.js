@@ -6,6 +6,7 @@ var path = require('path');
 var ejs = require('ejs');
 var wechat = require('wechat');
 var WechatAPI = require('wechat-api');
+var KaAPI = require('../ka-api');
 var config = {
   token: 'weixin',
   appid: 'wxc11926e87fca4c33',
@@ -122,6 +123,8 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
   }
 }));
 
+
+
 //微信JS的调用
 var param = {
      debug: true,
@@ -132,7 +135,7 @@ var param = {
             'onMenuShareTimeline',
             'onMenuShareAppMessage',
             'onMenuShareQQ',
-                    'onMenuShareWeibo'
+            'onMenuShareWeibo'
           ],
      url: 'http://kapark.cn/wechat/login/'
   };
@@ -141,17 +144,27 @@ var param = {
 exports.login = function(req,res){
     console.log('login');
     //获取最新的js sdk 配置 传给前台
-      //有openid
-    if(true){  //req.cookies.openid
-     api.getJsConfig(param, function (err,result) {
-       console.log(result);
-       res.cookie('appId',result.appId);
-       res.cookie('timestamp',result.timestamp);
-       res.cookie('nonceStr',result.nonceStr);
-       res.cookie('signature',result.signature);
-       res.cookie('jsApiList',result.jsApiList);
-       res.end(appTpl({text:config.appid}));
-     });   
+    //有openid
+    if(req.cookies.openid){ 
+    	
+     KaAPI.getUserByWxID({strWXID : req.cookies.openid},function(err,data){
+       		if(err)
+       			res.end('网络出错');
+       		console.log(data);
+       		res.cookie('strUserName',data.result);
+       		res.cookie('strPushID',data.result2);     		     		
+       		api.getJsConfig(param, function (err,result) {
+		        console.log(result);
+		        res.cookie('appId',result.appId);
+		        res.cookie('timestamp',result.timestamp);
+		        res.cookie('nonceStr',result.nonceStr);
+		        res.cookie('signature',result.signature);
+		        res.cookie('jsApiList',result.jsApiList);
+		        res.end(appTpl({text:config.appid}));
+    		});   
+       });
+    	//req.cookies.openid
+     
     }else{  
       //没有openid,进行授权登陆
        console.log('重定向页面');
@@ -183,13 +196,16 @@ exports.callback = function (req, res) {
 
        var accessToken = result.data.access_token;
        var openid = result.data.openid;
-       // oauth.getUser(openid,function(err,_result){     
-       // }        
-      //);
-        console.log('set openid');
-        res.cookie('openid',openid);
-        res.redirect('login/');
-        res.end();
+       res.cookie('openid',openid);
+       console.log('set openid');  
+       oauth.getUser(openid,function(err,_result){     
+            var headimgurl = _result.data.headimgurl	;	 
+        		res.cookie('headimgurl',headimgurl);
+       		    res.redirect('login/');
+                res.end();
+        	}
+       );
+
     }else{
         console.log('code unvalid');
         res.end();
@@ -250,7 +266,8 @@ exports.recharge = function(req, res){
         res.redirect("weixin://contacts/profile/linzehuan_");
 };
 
-
-exports.app = function(req,res) {
-       
-}
+//清除openid
+exports.app = function(req,res) {   
+		res.clearCookie('openid');
+		res.end('清除openid');
+};
