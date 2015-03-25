@@ -1,7 +1,7 @@
 var kapark = angular.module('kapark', ['ui.router', 
 		'indexModule', 'parkDetailModule', 'queryParkModule', 
 		'histroyModule', 'walletModule', 'parkManegeModule', 
-		'timesetModule', 'ipCookie', 'signupModule', 'filters', 'services']);
+		'timesetModule', 'addParkDetailModule', 'ipCookie', 'signupModule', 'filters', 'services']);
 
 kapark.run( function($rootScope, $state, $stateParams) {
 	$rootScope.$state = $state;
@@ -10,7 +10,7 @@ kapark.run( function($rootScope, $state, $stateParams) {
 
 //配置路由
 kapark.config( function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('/index');
+	$urlRouterProvider.otherwise('/signup');
 	$stateProvider
 		.state('index', {
 			url: '/index',
@@ -30,7 +30,7 @@ kapark.config( function($stateProvider, $urlRouterProvider) {
 		})
 		.state('queryPark', {
 			url: '/queryPark',
-			templateUrl: 'views/queryPark.html'
+			templateUrl: '/views/queryPark.html'
 		})
 		.state('signup', {
 			url: '/signup',
@@ -41,5 +41,8 @@ kapark.config( function($stateProvider, $urlRouterProvider) {
 		}).state('wallet', {
 			url: '/wallet',
 			templateUrl: '/views/wallet.html'
+		}).state('addParkDetail', {
+			url: '/addParkDetail',
+			templateUrl: '/views/addParkDetail.html'
 		})
 });

@@ -5,7 +5,6 @@ var services = angular.module('services', []);
 services.factory('Request', ['$http', function($http) {
 		var host = 'http://120.24.84.180:3000';
 		var url = {
-			GetWxConfig: 'http://kapark.cn:4000/rsx',
 			GetFreeParkListByDistance: host + '/park/GetFreeParkListByDistance',
 			GetFreeParkDetailList: host + '/park/GetFreeParkDetailList',
 			GetParkDetail: host + '/park/GetParkDetail',
@@ -20,8 +19,12 @@ services.factory('Request', ['$http', function($http) {
 			UpdateMyParkShareTime: host + '/park/UpdateMyParkShareTime',
 			DisableMyParkDetailSchedule: host + '/park/DisableMyParkDetailSchedule',
 			SetMyParkShareTime: host + '/park/SetMyParkShareTime',
-			GetUserNameByWXID: host + '/user/GetUserNameByWXID'
-
+			GetUserNameByWXID: host + '/user/GetUserNameByWXID',
+			RegisterParkDetail: host + '/park/RegisterParkDetail',
+			GetUserNameByWXID: host + '/user/GetUserNameByWXID',
+			BookParking: host + '/park/BookParking',
+			AddCar: host + '/car/AddCar',
+			GetMyCarList: host + '/car/GetMyCarList'
 		};
 
 		var post, get;
@@ -75,23 +78,24 @@ services.factory('Request', ['$http', function($http) {
 services.factory('User', function() {
     var longtitude = 113.314515,
 		latitude = 23.113742,
-		username = '13763379772',
-		password = '0CCB886FB60427F054E29293FA71B1D8',
-		openid = '123567',
-		icon = '';
+		username = '',
+		password = '',
+		wxId = '',
+		headimgurl = '';
 
 	var setLocation = function  (latitude,longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 
-	var setWxUserInfo = function(openid){
-		this.openid = openid;
-		//this.icon = result.headimgurl;
-		console.log(this.openid);
+	var setWxUserInfo = function(wxId, headimgurl){
+		this.wxId = wxId;
+		this.headimgurl = headimgurl;
+		console.log(this.wxId);
 	};
 
 	var setUserName = function(username, pushId) {
+		if(!username) return ;
 		this.username = username;
 		this.password = hex_md5(username + '2015' + pushId);
 	}
@@ -101,7 +105,8 @@ services.factory('User', function() {
 		latitude: latitude,
 		username: username,
 		password: password,
-		wxId: openid,
+		wxId: wxId,
+		headimgurl: headimgurl,
 		setLocation: setLocation,
 		setWxUserInfo: setWxUserInfo,
 		setUserName: setUserName
@@ -113,7 +118,7 @@ services.factory('User', function() {
 services.factory('Wxsdk', ['$http',  'Request', 'User', 'ipCookie', function($http, Request, User, ipCookie) {
 	var local_wx = wx;
 	var wx_config = {
-					debug: true,
+					debug: false,
 					appId: '',
 					timestamp: '',
 					nonceStr: '',
@@ -125,8 +130,7 @@ services.factory('Wxsdk', ['$http',  'Request', 'User', 'ipCookie', function($ht
 						'onMenuShareTimeline',
 						'onMenuShareAppMessage',
 						'onMenuShareQQ',
-		                'onMenuShareWeibo',
-		                'showOptionMenu'
+		                'onMenuShareWeibo'
 					]
 	};
 	//初始化WX接口设置
@@ -134,10 +138,8 @@ services.factory('Wxsdk', ['$http',  'Request', 'User', 'ipCookie', function($ht
    	wx_config.timestamp = ipCookie('timestamp');
    	wx_config.nonceStr = ipCookie('nonceStr');
    	wx_config.signature = ipCookie('signature');
-   	
-
 	wx.config(wx_config);
-    
+
 	var state = '正在调用';
 	
 	wx.ready(function(){
@@ -156,31 +158,25 @@ services.factory('Wxsdk', ['$http',  'Request', 'User', 'ipCookie', function($ht
 					if(callback){callback();}
 		   		}
 		});
-		wx.showOptionMenu();
 	});
 	wx.error(function (res) {
-		alert(JSON.stringify(wx_config)+location.href.split('#')[0]);
  		alert("配置信息失败"+res.errMsg);
 	});
+
+	
+	
+	
+	
 	
 	//alert(ipCookie('openid'));
 
 	//设置好WXid
-	User.setWxUserInfo(ipCookie('openid'));
+	User.setWxUserInfo(ipCookie('openid'), ipCookie('headimgurl'));
 
-	//请求账号密码
-	Request.post(Request.url.GetUserNameByWXID, {
-		strWXID: User.wxId
-	}, function(data) {
-		if(data.result == '') {
-			alert('系统异常')
-			return 0;
-		}
-		//设置好用户名
-		User.setUserName(data.result, data.result2);
+	//设置好用户名
+	User.setUserName(ipCookie('strUserName'), ipCookie('strPushID'));
 
-		console.log(User);
-	});
+	//alert('用户信息'+ JSON.stringify(User) );
 	
      
 	

@@ -6,19 +6,18 @@ timesetModule.controller('timesetCtrl', ['$scope', 'Request', 'User', '$statePar
 
 	$scope.noTurnOff = true;
 
-
 	$scope.oneEndTime = {
-		day: '0',
-		hour: '00',
+		day: '1',
+		hour: (new Date()).getHours() < 10 ? '0' + (new Date()).getHours() : '' + (new Date()).getHours() ,
 		minute: '00'
 	}
 	$scope.cycleTime = {
 		start: {
-			hour: '00',
+			hour: '09',
 			minute: '00'
 		},
 		end: {
-			hour: '00',
+			hour: '16',
 			minute: '00'
 		}
 	}
@@ -70,7 +69,7 @@ timesetModule.controller('timesetCtrl', ['$scope', 'Request', 'User', '$statePar
 			var day =parseInt( end.getTime()/1000/60/60/24 ) - parseInt( now.getTime()/1000/60/60/24 );
 
 			$scope.oneEndTime = {
-				day: day + '',
+				day: day >0? day+ '': '1',
 				hour: end.getHours() < 10 ? '0' + end.getHours(): end.getHours(),
 				minute: end.getMinutes() < 10 ? '0' + end.getMinutes(): end.getMinutes()
 			}
@@ -154,8 +153,12 @@ timesetModule.controller('timesetCtrl', ['$scope', 'Request', 'User', '$statePar
 		console.log(postObj);
 		Request.post(Request.url.SetMyParkShareTime, postObj, function(data) {
 			console.log(data);
-			alert('启用分享成功');
-			$scope.noTurnOn = true;
+			if(data.result > 0 ) {
+				alert('启用分享成功');
+				$scope.noTurnOn = true;
+			} else {
+				alert('启用分享失败，错误码：' + data.result );
+			}
 		})
 
 

@@ -12,7 +12,8 @@
 		</div>
 		<span class="local">广州市</span>
 		</header>
-		<ul class="history-list" ng-controller="historyCtrl">
+		<div ng-controller="historyCtrl">
+		<ul class="history-list" >
 
 			
 			<li class="histroy-one" ng-repeat="histroy in histroys">
@@ -29,4 +30,8 @@
 			</li>
 		
 		</ul>
+				<button  ng-click="deleteCookie()" >
+			删除cookie
+		</button>
+		</div> 
 	</section>

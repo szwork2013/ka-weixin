@@ -1,7 +1,10 @@
 var indexModule = angular.module('indexModule', []);
 
-indexModule.controller('initIndexCtrl', ['$scope', 'Wxsdk', function($scope, Wxsdk) {
+indexModule.controller('initIndexCtrl', ['$scope', 'Wxsdk', '$location', 'ipCookie', function($scope, Wxsdk, $location,ipCookie) {
 
+	if(!ipCookie('strUserName')) {
+		$location.path('/signup');
+	}
 
 	$scope.$on('initPage', function(event) {
 			
@@ -137,5 +140,38 @@ histroyModule.controller('historyCtrl', ['$scope', 'User', 'Request', function($
 					 $scope.histroys = histroys;
 
 	});
+
+	 $scope.deleteCookie = function(){
+    	ipCookie.remove('strUserName', { path: '/wechat' });
+    	ipCookie.remove('strPushID', { path: '/wechat' });
+    	ipCookie.remove('openid', { path: '/wechat' });
+    	ipCookie.remove('appId', { path: '/wechat' });
+    	ipCookie.remove('timestamp', { path: '/wechat' });
+    	ipCookie.remove('nonceStr', { path: '/wechat' });
+    	ipCookie.remove('signature', { path: '/wechat' });
+    	ipCookie.remove('jsApiList', { path: '/wechat' });
+ 		ipCookie.remove('headimgurl', { path: '/wechat' });
+
+    	ipCookie.remove('strUserName',{path:'/'});
+    	ipCookie.remove('strPushID',{path:'/'});
+    	ipCookie.remove('openid',{path:'/'});
+    	ipCookie.remove('appId', { path: '/' });
+    	ipCookie.remove('timestamp', { path: '/' });
+    	ipCookie.remove('nonceStr', { path: '/' });
+    	ipCookie.remove('signature', { path: '/' });
+    	ipCookie.remove('jsApiList', { path: '/' });
+    	ipCookie.remove('headimgurl', { path: '/' });
+
+    	ipCookie.remove('strUserName');
+    	ipCookie.remove('strPushID');
+    	ipCookie.remove('openid');	
+    	ipCookie.remove('appId');
+    	ipCookie.remove('timestamp');
+    	ipCookie.remove('nonceStr');
+    	ipCookie.remove('signature');
+    	ipCookie.remove('jsApiList');
+    	ipCookie.remove('headimgurl');
+		alert('清除cookie成功'+document.cookie);
+		};
 
 }]);

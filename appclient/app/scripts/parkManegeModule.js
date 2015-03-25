@@ -12,7 +12,7 @@ parkManegeModule.controller('GetMyParkDetail', ['$scope', 'User', 'Request',func
 		var examines = [];
 
 		for( i=0, len = res.length; i < len; i++ ) {
-			if(res[i].fDetailtype === '待审核') {
+			if(res[i].fDetailtype === '审核中') {
 				examines.push(res[i]);
 			} else {
 				detail = res[i];

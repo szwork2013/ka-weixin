@@ -22,6 +22,7 @@ module.exports = function  (app) {
 	app.get('/url',function(){
 		user.getOauthUrl('http://kapark.cn/#/index','12','snsapi_userinfo');
 	});
+    app.get('/wechat/setcookie',kaWechat.setCookie)
 
 
 	

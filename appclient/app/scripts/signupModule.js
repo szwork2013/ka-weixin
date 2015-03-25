@@ -1,5 +1,13 @@
 var signupModule = angular.module('signupModule', []);
-signupModule.controller('signupCtrl', ['$scope', 'User', 'Request', '$location', function($scope, User, Request, $location){
+signupModule.controller('signupCtrl', ['$scope', 'User', 'Request', '$location', 'ipCookie', function($scope, User, Request, $location, ipCookie){
+	//设置好WXid
+	User.setWxUserInfo(ipCookie('openid'), ipCookie('headimgurl'));
+	//alert(ipCookie('openid'));
+
+	if(ipCookie('strUserName')) {
+		$location.path('/index');
+	}
+
 	$scope.username = '';
 	$scope.vcode = '';
 
@@ -18,11 +26,11 @@ signupModule.controller('signupCtrl', ['$scope', 'User', 'Request', '$location',
 	}
 
 	$scope.WXBinding = function() {
-		console.log({
+		alert(JSON.stringify({
 		  	strUserName: $scope.username,
 		  	strVCode: $scope.vcode,
 		  	strWXID: User.wxId
-		});
+		}));
 		Request.post(Request.url.WXBinding, {
 		  	strUserName: $scope.username +'',
 		  	strVCode: $scope.vcode,
@@ -30,8 +38,14 @@ signupModule.controller('signupCtrl', ['$scope', 'User', 'Request', '$location',
 		}, function(data){
 			console.log(data);
 			alert(data.result);
-			if(data.result2 == 'true' ){
-				$location.path('/index');
+			if(data.result2){
+				Request.post(Request.url.GetUserNameByWXID, {
+					strWXID: User.wxId
+				}, function(data){
+					ipCookie('strUserName', $scope.username+'');
+					ipCookie('strPushID', data.result2);
+					$location.path('/index');
+				});
 			} else {
 				alert('请重新输入');
 			}
@@ -46,6 +60,7 @@ signupModule.controller('signupCtrl', ['$scope', 'User', 'Request', '$location',
 			$scope.banVcode = true;
 		}
 	}
+	
 	$scope.testBind = function() {
 		if(/^[0-9]{11}$/.test($scope.username) && /^[0-9]{4}$/.test($scope.vcode) ) {
 			$scope.banBinging = false;

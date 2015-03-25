@@ -1,0 +1,76 @@
+
+	<section id="addParkDetail" ng-controller="addParkDetailCtrl">
+		<header class="header1">
+		<a ui-sref="parkManege">
+			<div class="logo-wrap">
+				<img  class="logo" src="/images/back.png" alt="返回">
+			</div>
+		</a>
+		<span class="header-title">添加车位</span>
+		
+		</header>
+		<div class="park-area-wrap">
+			<h3>请选择你的停车场所在的行政区</h3>
+			<ul class="park-area">
+				<li class="selected">天河区</li>
+				<li>番禺区</li>
+				<li>越秀区</li>
+				<li>海珠区</li>
+				<li>黄浦区</li>
+				<li>荔湾区</li>
+			</ul>
+		</div>
+		<div class="park-list-wrap">
+			<h3>请选择你的车位所在停车场</h3>
+			<ul class="park-area">
+				<li class="selected">
+					<ul>
+						<li>月岛</li>
+					</ul>
+				</li>
+				<li>
+					<ul>
+						<li>月岛</li>
+						<li>月岛2</li>
+						<li>月岛3</li>
+						<li>月岛4</li>
+						<li>月岛5</li>
+					</ul>
+				</li>
+				<li>
+					<ul>
+						<li>月岛</li>
+						<li>月岛2</li>
+						<li>月岛3</li>
+						<li>月岛4</li>
+						<li>月岛5</li>
+					</ul>
+				</li>
+				<li>
+					<ul>
+						<li>月岛</li>
+						<li>月岛2</li>
+						<li>月岛3</li>
+						<li>月岛4</li>
+						<li>月岛5</li>
+					</ul>
+				</li>
+			
+			</ul>
+		</div>
+		<div class="shade pop">
+			<div class="modal">
+				<div class="title">
+					新增分享车位
+				</div>
+				<div class="info">
+					<span>车位号：</span><input type="text" placeholder="例如：000" ng-model="strParkNumber">
+				</div>
+				<div class="btn">
+					<a ui-sref="parkManege"><button class="refuse">取消</button></a>
+					<button class="accept" ng-click="registerParkDetail()">确定</button>
+				</div>
+			</div>
+		</div>
+
+	</section>

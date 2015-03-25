@@ -12,6 +12,7 @@ walletModule.controller('getMyBalanceCtrl', ['$scope', 'User', 'Request', functi
 
 walletModule.controller('queryBalanceListCtrl', ['$scope', 'User', 'Request', function($scope, User, Request){
 
+	$scope.headimgurl =  User.headimgurl;
 	function Owndate(datefromdb) {
 		var reg = /\/Date\(([0-9]+)\)\//;
 		var m = reg.exec(datefromdb);
@@ -21,14 +22,14 @@ walletModule.controller('queryBalanceListCtrl', ['$scope', 'User', 'Request', fu
 	}
 
 	Owndate.prototype.returnDay= function(){
-		var str = (this.date.getUTCMonth()+1) + '-' +this.date.getUTCDate();
+		var str = (this.date.getMonth()+1) + '-' +this.date.getDate();
 		return str;
 	}
 	Owndate.prototype.returnTime = function(){
 		var str = '';
-		str += (this.date.getUTCMonth()+1)+'-' + this.date.getUTCDay() + ' ';
-		str += this.date.getUTCDate()< 13 ? '上午': '下午';
-		str += ' ' + this.date.getUTCHours()  + ':' + this.date.getUTCMinutes();
+		str += (this.date.getMonth()+1)+'-' + this.date.getDate() + ' ';
+		str += this.date.getHours()< 13 ? '上午': '下午';
+		str += ' ' + this.date.getHours()  + ':' + this.date.getMinutes();
 		return str;
 	}
 	Owndate.prototype.returnDate = function(){
@@ -36,13 +37,12 @@ walletModule.controller('queryBalanceListCtrl', ['$scope', 'User', 'Request', fu
 	}
 
 	Owndate.prototype.cmpDate = function( anoDate ) {
-		if(this.date.getUTCMonth() === anoDate.getUTCMonth() 
-			&& this.date.getUTCDate() === anoDate.getUTCDate() ) {
+		if(this.date.getMonth() === anoDate.getMonth() 
+			&& this.date.getDate() === anoDate.getDate() ) {
 			return true;
 		}
 		return false;
 	}
-
 	Request.post(Request.url.QueryBalanceList, {
 		strUserName: User.username,
 		strPassWord: User.password
@@ -91,6 +91,7 @@ walletModule.controller('queryBalanceListCtrl', ['$scope', 'User', 'Request', fu
 		$scope.yesterdayBalances = yesterdayBalances;
 		$scope.otherShow = otherShow;
 		$scope.otherBalances = otherBalances;
-	})
+	});
+	
 
 }]);

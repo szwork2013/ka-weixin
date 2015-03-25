@@ -3,46 +3,73 @@
 		<header class="header2">
 			<nav class="detail-header">
 				<div class="logo-wrap">
-				<a ui-sref="queryPark">
-				<img  class="logo" src="images/back.png" alt="返回">
+				<a ui-sref="index">
+					<img  class="logo" src="/images/back.png" alt="返回">
 				</a>
 				</div>
-				<span class="header-title">查询车位</span>
+				<span class="header-title">车位概况</span>
 				<div class="local-logo-wrap">
-				<img class="local-logo" src="images/localtionLogo.png" alt="定位">
+					<img class="local-logo" src="/images/localtionLogo.png" alt="定位">
 				</div>
-				<span class="local">广州市</span>
+				<span class="local">月岛</span>
 			</nav>
 			<div class="park-name">{{parkInfo.name}}</div>
 			<div class="park-address">{{parkInfo.address}}</div>
 			<div class="park-leave">空位：{{parkInfo.leave}}个</div>
 			<div class="park-location">960米内</div>
 		</header>
-		<div class="sub-title">待租用车位</div>
-		<ul class="park-detail-list" ng-click="onModalPop()">
-			
-			<li ng-repeat="parkDetail in parkDetails" >
+		<div class="sub-title">
+			<div class="number">车位号</div>
+			<div class="endtime">车位可用至</div>
+			<div class="price-bottom">账户最低余额</div>
+		</div>
+		<ul class="park-detail-list">
+			<li ng-repeat="parkDetail in parkDetails"  ng-click="onModalPop(parkDetail.id, parkDetail.time, parkDetail.number)">
 				<div class="park-number">{{parkDetail.number}}</div>
-				<div class="park-endtime">结束时间:{{parkDetail.time}}</div>
-				<div class="par-number-detail"><img src="images/gohead.png" alt=""></div>
+				<div class="park-endtime">{{parkDetail.time}}</div>
+				<div class="park-price">{{parkDetail.minCost}}</div>
+				<div class="park-number-detail"><img src="images/gohead.png" alt=""></div>
 			</li>
-			
-			
 		</ul>
 		<div class="shade">
 		<div class="modal">
 			<div class="title">
-				敬请注意
+				车位预定
 			</div>
 			<div class="info">
-				租用车位请下载我们专用的app
+				<h3>请选择车牌号码</h3>
+				<ul class="park-number-list">
+					<li ng-repeat="carNumber in CarNumbers" class="{{[carNumber.id, iCarID]|isIndexCarNumber}}" ng-click="changeiCarID(carNumber.id)">{{carNumber.number}}</li>
+				</ul>
+				<div class="park-number-add">
+					<select name="" id="" class="provice" ng-model="addCarNumber[0]">
+						<option value="粤">粤</option>
+						<option value=""></option>
+						<option value=""></option>
+						<option value=""></option>
+						<option value=""></option>
+					</select>
+					<select name="" id="" class="area" ng-model="addCarNumber[1]">
+						<option value="A">A</option>
+						<option value="B">B</option>
+						<option value="C">C</option>
+					</select>
+					<input type="text" class="num" ng-model="addCarNumber[2]">
+					<button class="add" ng-click="addCark()">+</button>
+				</div>
+				<h3>详细信息</h3>
+				<div class="name">用户名：{{username}}</div>
+				<div class="park-info">预定车位：{{number}}</div>
+				<div class="endtime">截止时间：{{endtime}}</div>
+				<div class="price">价格:2元/15分钟</div>
 			</div>
 			<div class="btn">
-				<button class="refuse">残忍拒绝</button>
-				<button class="accept">立即下载</button>
+				<button class="refuse">返回</button>
+				<button class="accept" ng-click="bookingPark()">确定</button>
 			</div>
 			
 		</div>
+	</div>
 	</div>
 	</section>
 

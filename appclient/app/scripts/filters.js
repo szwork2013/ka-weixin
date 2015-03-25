@@ -84,4 +84,13 @@ angular.module('filters', [])
 				default: return ''
 			}
 		}
+	})
+	.filter('isIndexCarNumber', function(){
+		return function(input) {
+			if(input[0] === input[1]) {
+				return 'selected';
+			}
+
+			return '';
+		}
 	});

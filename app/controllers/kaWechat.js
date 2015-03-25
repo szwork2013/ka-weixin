@@ -12,7 +12,7 @@ var config = {
   appid: 'wxc11926e87fca4c33',
   encodingAESKey: 'fAEBTD5FYRZp0GVuiTH7YBkHVNsXE94yWyA56ayqPxC',
   secret: "3d9fd4a4e62b392166cfe7600ee07d17",
-  domain: "http://kapark.cn"   //开发环境域名 "http://120.24.84.180"
+  domain: "http://app.kapark.cn"   //开发环境域名 "http://120.24.84.180"
 };
 
 var oauth = new wechat.OAuth(config.appid, config.secret,function (openid, callback) {
@@ -52,7 +52,7 @@ api.registerTicketHandle(function (type,callback) {
   fs.writeFile('./config/ticket_token.txt', JSON.stringify(ticketToken), callback);
 });
 
-
+//*******************************************************************************************************//
 exports.index = wechat(config, wechat.text(function (message, req, res) {
   console.log(message);
   var input = (message.Content || '').trim();
@@ -124,10 +124,10 @@ exports.index = wechat(config, wechat.text(function (message, req, res) {
 }));
 
 
-
+//************************************************************************************************************//
 //微信JS的调用
 var param = {
-     debug: true,
+     debug: false,
      jsApiList: [
             'checkJsApi',
             'openLocation',
@@ -137,7 +137,7 @@ var param = {
             'onMenuShareQQ',
             'onMenuShareWeibo'
           ],
-     url: 'http://kapark.cn/wechat/login/'
+     url: config.domain+'/wechat/login/'
   };
 
 //微信webAPP登陆
@@ -146,15 +146,21 @@ exports.login = function(req,res){
     //获取最新的js sdk 配置 传给前台
     //有openid
     if(req.cookies.openid){ 
-    	
+    console.log(req.cookies.openid);
      KaAPI.getUserByWxID({strWXID : req.cookies.openid},function(err,data){
        		if(err)
        			res.end('网络出错');
        		console.log(data);
-       		res.cookie('strUserName',data.result);
-       		res.cookie('strPushID',data.result2);     		     		
+          if(data.result){
+              res.cookie('strUserName',data.result);
+          }
+          if(data.result2){
+              res.cookie('strPushID',data.result2);
+          }
+        		
        		api.getJsConfig(param, function (err,result) {
 		        console.log(result);
+ 
 		        res.cookie('appId',result.appId);
 		        res.cookie('timestamp',result.timestamp);
 		        res.cookie('nonceStr',result.nonceStr);
@@ -168,7 +174,7 @@ exports.login = function(req,res){
     }else{  
       //没有openid,进行授权登陆
        console.log('重定向页面');
-       res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc11926e87fca4c33&redirect_uri=http%3A%2F%2Fkapark.cn%2Fwechat%2Fcallback&response_type=code&scope=snsapi_userinfo&state=state#wechat_redirect');
+       res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc11926e87fca4c33&redirect_uri=http%3A%2F%2Fapp.kapark.cn%2Fwechat%2Fcallback&response_type=code&scope=snsapi_userinfo&state=state#wechat_redirect');
        res.end();
     }
 
@@ -177,7 +183,8 @@ exports.login = function(req,res){
 //生成授权登陆的链接
 exports.oauth = function(req, res){
   res.writeHead(200);
-  var redirect = 'http://kapark.cn/wechat/callback';
+  var redirect = config.domain+'/wechat/callback';
+  console.log(redirect);
   var authorizeURL = oauth.getAuthorizeURL(redirect, 'state', 'snsapi_userinfo')
   res.end(authorizeURL);
 }
@@ -196,11 +203,11 @@ exports.callback = function (req, res) {
 
        var accessToken = result.data.access_token;
        var openid = result.data.openid;
-       res.cookie('openid',openid);
+       res.cookie('openid',openid,{path:"/wechat",maxAge:12*30*24*60*60*1000});
        console.log('set openid');  
        oauth.getUser(openid,function(err,_result){     
-            var headimgurl = _result.data.headimgurl	;	 
-        		res.cookie('headimgurl',headimgurl);
+            var headimgurl = _result.headimgurl	;	 
+        		res.cookie('headimgurl',headimgurl,{path:"/wechat",maxAge:30*24*60*60*1000});
        		    res.redirect('login/');
                 res.end();
         	}
@@ -226,22 +233,22 @@ exports.setMenu = function(req, res){
 				     "url": config.domain+"/wechat/login/"
 				   },
            {
-             "type":"view",
-             "name":"分享车位",
-             "url": config.domain+"/login"
+             "type":"click",
+             "name":"快速充值",
+             "key":"recharge"
            },
             {
              "name":"联系我们",
-             "sub_button":[
-               {
-                 "type":"click",
-                 "name":"快速充值",
-                 "key":"recharge"
-               },
+             "sub_button":[     
                {
                  "type":"view",
                  "name":"下载安桌版",
                  "url":config.domain+"/recharge"
+               },
+               {
+                 "type":"view",
+                 "name":"使用说明",
+                 "url": config.domain+":3000/source/howtouse"
                },
                {
                  "type":"view",
@@ -268,6 +275,15 @@ exports.recharge = function(req, res){
 
 //清除openid
 exports.app = function(req,res) {   
-		res.clearCookie('openid');
-		res.end('清除openid');
+   var openid = req.cookies.openid;
+		//res.clearCookie('openid');
+    //res.clearCookie('strUserName', { path: '/' });
+    //res.clearCookie('strUserName');
+		res.end(openid);
+};
+exports.setCookie = function  (req,res) {
+  // body...
+    res.cookie('openid','/dwechat',{path:'/wechat',maxAge:2*60*60*1000});
+    res.cookie('openid','/',{path:'/'});
+    res.end();
 };
