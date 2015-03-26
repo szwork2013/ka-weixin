@@ -4,14 +4,8 @@
 var fs = require('fs');
 var wechat = require('wechat');
 var WechatAPI = require('wechat-api');
-var config = {
-  token: 'weixin',
-  appid: 'wxc11926e87fca4c33',
-  encodingAESKey: 'fAEBTD5FYRZp0GVuiTH7YBkHVNsXE94yWyA56ayqPxC',
-  secret: "3d9fd4a4e62b392166cfe7600ee07d17",
-  domain: "http://app.kapark.cn"   
-          //开发环境域名 "http://120.24.84.180"
-};
+var config = require("../../config/configs").wechat;
+var replyConfig = require("../../config/configs").replyConfig;
 
 var oauth = new wechat.OAuth(config.appid, config.secret,function (openid, callback) {
              fs.readFile('./config/user_access_token/' + openid +'.txt', 'utf8', function (err, txt) {
@@ -36,7 +30,7 @@ api.registerTicketHandle(function (type,callback) {
               if (err) {return callback(err);}
               callback(null, JSON.parse(txt));
             });
-          }, function (type, ticketToken, callback) {
+            }, function (type, ticketToken, callback) {
             fs.writeFile('./config/ticket_token.txt', JSON.stringify(ticketToken), callback);
 });
 
@@ -44,6 +38,7 @@ module.exports = {
       config: config,
       oauth: oauth,
       api: api,
-      wechat: wechat
+      wechat: wechat,
+      replyConfig: replyConfig
 };
 

@@ -2,7 +2,8 @@
 var initWechat =  require('./initWechat')
 var wechat = initWechat.wechat;
 var config = initWechat.config;
-exports.index = wechat(config, wechat.text(function (message, req, res) {
+var replyConfig = initWechat.replyConfig;
+exports.index = wechat(replyConfig, wechat.text(function (message, req, res) {
           console.log(message);
           var input = (message.Content || '').trim();
           var from = message.FromUserName;

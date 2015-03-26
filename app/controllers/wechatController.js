@@ -3,7 +3,7 @@
 var wechatApp = require('./wechatApp');
 var replyController = require('./replyController');
 var menuController = require('./menuController');
-var saleController = require('./saleController');
+var saleController = require('./salerController');
 
 exports.index = replyController.index;
 
@@ -13,7 +13,7 @@ exports.oauth = wechatApp.oauth;
 
 exports.setMenu = menuController.setMenu;
 
-exports.addSale = saleController.addSale;
+exports.addSaler= saleController.addSaler;
 
 
 

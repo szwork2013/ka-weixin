@@ -7,5 +7,5 @@ module.exports = function  (app) {
     app.get('/wechat/setmenu',wechat.setMenu);
     app.get('/wechat/oauth',wechat.oauth);
     app.get('/wechat/callback',wechat.callback);
-    app.get('/wechat/addSale',wechat.addSale); 
+    app.get('/wechat/addSaler',wechat.addSaler); 
 };

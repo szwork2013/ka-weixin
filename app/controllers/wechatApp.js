@@ -49,7 +49,7 @@ exports.login = function(req,res){
     }else{  
       //没有openid,进行授权登陆
        console.log('重定向页面');
-       res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc11926e87fca4c33&redirect_uri=http%3A%2F%2Fapp.kapark.cn%2Fwechat%2Fcallback&response_type=code&scope=snsapi_userinfo&state=state#wechat_redirect');
+       res.redirect(config.redirect_url);
        res.end();
     }
 
@@ -72,10 +72,10 @@ exports.callback = function (req, res) {
              var openid = result.data.openid;
              res.cookie('openid',openid,{path:"/wechat",maxAge:12*30*24*60*60*1000});
              oauth.getUser(openid,function(err,_result){     
-                  var headimgurl = _result.headimgurl	;	 
+                  var headimgurl = _result.headimgurl;	 
               		res.cookie('headimgurl',headimgurl,{path:"/wechat",maxAge:30*24*60*60*1000});
-             		res.redirect('login/');
-                    res.end();
+             		  res.redirect('login/');
+                  res.end();
               	}
              );
 

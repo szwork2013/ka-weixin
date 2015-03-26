@@ -8,7 +8,7 @@ exports.setMenu = function(req, res){
 				 "button":[
 				   {
 				     "type":"view",
-				     "name":"互助停车",
+				     "name":"立即停车",
 				     "url": config.domain+"/wechat/login/"
 				   },
 		           {
