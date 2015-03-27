@@ -1,1 +1,1 @@
-{"ticket":"sM4AOVdWfPE4DxkXGEs8VOohB27MhgGGs5s5REORlO8vdSntmXKkBvN3uCA7BWSLKUng2vZwCNH2wUGdoFz5FQ","expireTime":1427266876533}
+{"ticket":"","expireTime":0}

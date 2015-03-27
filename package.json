@@ -14,8 +14,9 @@
     "ejs": "^2.3.1",
     "express": "^4.12.2",
     "jssha": "^1.5.0",
+    "mysql": "^2.6.0",
+    "urllib": "2.0.2",
     "wechat": "^1.2.3",
-    "wechat-api": "^1.7.0",
-    "urllib": "2.0.2"
+    "wechat-api": "^1.7.0"
   }
 }

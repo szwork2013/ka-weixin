@@ -5,8 +5,8 @@ var wechat =  {
     appid: 'wxc11926e87fca4c33',
     encodingAESKey: 'fAEBTD5FYRZp0GVuiTH7YBkHVNsXE94yWyA56ayqPxC',
     secret: '3d9fd4a4e62b392166cfe7600ee07d17',
-    domain: 'http://kapark.cn ',
-    redirect_url: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc11926e87fca4c33&redirect_uri=http%3A%2F%2Fkapark.cn%2Fwechat%2Fcallback&response_type=code&scope=snsapi_userinfo&state=state#wechat_redirect',  
+    domain: 'http://wechat.kapark.cn',
+    redirect_url: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc11926e87fca4c33&redirect_uri=http%3A%2F%2Fwechat.kapark.cn%2Fwechat%2Fcallback&response_type=code&scope=snsapi_userinfo&state=state#wechat_redirect',  
           //开发环境域名 'http://120.24.84.180'
 };
 
@@ -50,8 +50,9 @@ exports.wechat = wechat;
 exports.db = db;
 exports.replyConfig = replyConfig;
 //测试
-exports.wechat = wechat_dev;
-exports.db = db_dev;
-exports.replyConfig = replyConfig_dev;
-//转服务器时，需要清除config目录下的access_token.txt里的token和expiretime
+// exports.wechat = wechat_dev;
+// exports.db = db_dev;
+// exports.replyConfig = replyConfig_dev;
+//转服务器时，需要清除config目录下的access_token.txt里的token和expiretime,清除ticket_token.txt 里的值
+
 

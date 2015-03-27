@@ -22,9 +22,8 @@ var param = {
 
 //微信webAPP登陆
 exports.login = function(req,res){
-    console.log('login');
+    console.log('login：'+req.cookies.openid);
     if(req.cookies.openid){ 
-    console.log(req.cookies.openid);
      KaAPI.getUserByWxID({strWXID : req.cookies.openid},function(err,data){
        		if(err)
        			res.end('网络出错');
@@ -71,7 +70,10 @@ exports.callback = function (req, res) {
              var accessToken = result.data.access_token;
              var openid = result.data.openid;
              res.cookie('openid',openid,{path:"/wechat",maxAge:12*30*24*60*60*1000});
-             oauth.getUser(openid,function(err,_result){     
+             oauth.getUser(openid,function(err,_result){ 
+                  if(err&&_result){
+                     res.end(err);
+                  }    
                   var headimgurl = _result.headimgurl;	 
               		res.cookie('headimgurl',headimgurl,{path:"/wechat",maxAge:30*24*60*60*1000});
              		  res.redirect('login/');

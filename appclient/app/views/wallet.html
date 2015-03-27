@@ -1,0 +1,58 @@
+
+	<section id="wallet" ng-controller="queryBalanceListCtrl">
+		<header class="header2">
+			<nav class="detail-header">
+				<a ui-sref="index"><div class="logo-wrap">
+				<img  class="logo" src="/images/back.png" alt="返回">
+				</div></a>
+				<span class="header-title">我的钱包</span>
+				<div class="local-logo-wrap">
+				<img class="local-logo" src="/images/localtionLogo.png" alt="定位">
+				</div>
+				<span class="local">广州市</span>
+			</nav>
+			<div class="wallet-info" ng-controller="getMyBalanceCtrl">
+				<img src="{{headimgurl}}" alt="我的头像" class="headimg">
+				<div class="right"> 
+				<div class="money">¥{{money}}</div>
+				<div class="moneysum">累计收益&nbsp;¥{{profit}}</div>
+				</div>
+			</div>
+
+		</header>
+		<ul class="pay-list"  ng-show="todayShow">
+			<h2>今天</h2>
+			<li ng-repeat="balance in todayBalances">
+				<div class="pay-price">{{balance.money}}</div>
+				<div class="pay-info"> 
+					<span class="pay-name">{{balance.type}}</span> <br>
+					<span class="pay-time">{{balance.date}}</span>
+				</div>
+			</li>
+		
+				
+		</ul>
+		<ul class="pay-list" ng-controller="queryBalanceListCtrl" ng-show="yesterdayShow">
+			<h2>昨天</h2>
+			<li ng-repeat="balance in yesterdayBalances">
+				<div class="pay-price">{{balance.money}}</div>
+				<div class="pay-info"> 
+					<span class="pay-name">{{balance.type}}</span> <br>
+					<span class="pay-time">{{balance.date}}</span>
+				</div>
+			</li>
+		</ul>
+		<ul class="pay-list" ng-controller="queryBalanceListCtrl" ng-show="otherShow">
+			<h2>历史收支</h2>
+			<li ng-repeat="balance in otherBalances">
+				<div class="pay-price">{{balance.money}}</div>
+				<div class="pay-info"> 
+					<span class="pay-name">{{balance.type}}</span> <br>
+					<span class="pay-time">{{balance.date}}</span>
+				</div>
+			</li>
+		</ul>
+
+		
+	</section>
+

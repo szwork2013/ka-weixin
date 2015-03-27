@@ -1,0 +1,59 @@
+
+	<section id="bookParking" ng-controller="bookParkingCtrl">
+		<header class="header1">
+			<a ui-sref="parkDetail({parkId:111})">
+			<div class="logo-wrap">
+				<img  class="logo" src="/images/back.png" alt="返回">
+			</div>
+			</a>
+			<span class="header-title">预定车位</span>
+		</header>
+		<div class="info">
+				<h3>请选择车牌号码</h3>
+				<ul class="park-number-list">
+					<li ng-repeat="carNumber in CarNumbers" class="{{[carNumber.id, iCarID]|isIndexCarNumber}}" ng-click="changeiCarID(carNumber.id)">{{carNumber.number}}</li>
+				</ul>
+				<div class="park-number-add">
+					<span>点击添加车牌</span>
+					<button class="add" ng-click="showModal()">+</button>
+				</div>
+				<h3>详细信息</h3>
+				<div class="name">用户名：{{username|encryptPhone}}</div>
+				<div class="park-info">预定车位：{{parkName}}{{number}}</div>
+				<div class="endtime">可使用截止时间：{{endtime|dbDateToTime|date:"hh:mm"}}</div>
+				<div class="price">价格:2元/15分钟</div>
+				<div class="tips">温馨提示:一旦确定，该车位将为你保留，即开始收费。进场后请确保在车费可使用截至时间前30分钟离开，以免妨碍车位业主的正常使用。</div>
+		</div>
+		<footer >
+			<a ui-sref="parkDetail({parkId:111})"> <button class="refuse">返回</button> </a>
+			<button class="accept" ng-click="bookingPark()">确定</button>
+		</footer>
+
+		<div class="shade {{modal|isPop}}">
+			<div class="modal">
+				<div class="title">
+					添加车牌
+				</div>
+				<div class="select">
+					<select name="" id="" class="provice" ng-model="addCarNumber[0]">
+						<option value="粤">粤</option>
+						<option value=""></option>
+						<option value=""></option>
+						<option value=""></option>
+						<option value=""></option>
+					</select>
+					<select name="" id="" class="area" ng-model="addCarNumber[1]">
+						<option value="A">A</option>
+						<option value="B">B</option>
+						<option value="C">C</option>
+					</select>
+					<input type="text" class="num" ng-model="addCarNumber[2]">
+				</div>
+				<div class="btn">
+					<button class="refuse" ng-click="hideModal()">取消</button>
+					<button class="accept" ng-click="addCark()">确定</button>
+				</div>
+			</div>
+		</div>
+	</section>
+

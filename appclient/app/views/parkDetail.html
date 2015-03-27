@@ -1,0 +1,40 @@
+
+	<section id="parkDetail"  ng-controller="parkDetailCtrl">
+		<header class="header2">
+			<nav class="detail-header">
+				<div class="logo-wrap">
+				<a ui-sref="index">
+					<img  class="logo" src="/images/back.png" alt="返回">
+				</a>
+				</div>
+				<span class="header-title">车位概况</span>
+				<div class="local-logo-wrap">
+					<img class="local-logo" src="/images/localtionLogo.png" alt="定位">
+				</div>
+				<span class="local">月岛</span>
+			</nav>
+			<div class="park-name">{{parkInfo.name}}</div>
+			<div class="park-address">{{parkInfo.address}}</div>
+			<div class="park-leave">空位：{{parkInfo.leave}}个</div>
+			<div class="park-location"></div>
+		</header>
+		<div class="sub-title">
+			<div class="number">车位号</div>
+			<div class="endtime">车位可用至</div>
+			<div class="price-bottom">账户最低余额</div>
+		</div>
+		<ul class="park-detail-list">
+			<a ng-repeat="parkDetail in parkDetails"  ui-sref="bookParking({iParkDetailID:parkDetail.id})">
+				<li >
+					<div class="park-number">{{parkDetail.number}}</div>
+					<div class="park-endtime">{{parkDetail.time|dbDateToTime|date:"hh:mm"}}</div>
+					<div class="park-price">{{parkDetail.minCost}}</div>
+					<div class="park-number-detail"><img src="/images/gohead.png" alt=""></div>
+				</li>
+			</a>
+		</ul>
+		
+	</div>
+	</div>
+	</section>
+
